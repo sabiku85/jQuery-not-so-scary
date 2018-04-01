@@ -1,29 +1,34 @@
 $(function() {
-  const ratingCircle = document.getElementsByClassName('rating-circle');
-  console.log(ratingCircle);
-  const siblingsOfRatingCircle = $(ratingCircle).siblings('.rating-circle');
-  console.log(siblingsOfRatingCircle);
 
-  $(ratingCircle).hover(yellowCircles, whiteCircles);
-  $(ratingCircle).click(greenCircles);
+  let clickedCircles;
 
+  $('.rating-circle').on('click', greenCircles);
+  $('.rating-circle').on('mouseenter', yellowCircles);
+  $('.rating-circle').on('mouseleave', whiteCircles);
+  
   function yellowCircles() {
     $(this).css('background', 'yellow');
-    $(this).prevAll().css('background', 'yellow');
+    $(this).prevAll('.rating-circle').css('background', 'yellow');
+    $(this).nextAll('.rating-circle').css('background', 'inherit');
   }
 
   function whiteCircles() {
-    $(this).css('background', 'white');
-    $(this).prevAll().css('background', 'white');
+    $(this).css('background', 'inherit');
+    $(this).prevAll('.rating-circle').css('background', 'inherit');
+    $(clickedCircles).css('background', 'green');
+    $(clickedCircles).prevAll('.rating-circle').css('background', 'green');
   }
   
   function greenCircles() {
-    const circleIndex = $(ratingCircle).index(this) + 1;
+    clickedCircles = $(this);
+    const circleIndex = $('.rating-circle').index(clickedCircles) + 1;
 
-  	$(this).css('background', 'green');
-    $(this).prevAll().css('background', 'green');
+    $(clickedCircles).css('background', 'green');
+    $(clickedCircles).prevAll('.rating-circle').css('background', 'green');
+    $(clickedCircles).nextAll('.rating-circle').css('background', 'inherit');
     $('#ocena').removeAttr('hidden');
 
-    $('#ocena').text(circleIndex + '/5');
+    $('#ocena').text('Twoja ocena to ' + circleIndex + '/5');
   }
+ 
 });
